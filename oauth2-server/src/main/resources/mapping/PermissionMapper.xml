@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.IPermissionDao">
+
+    <resultMap id="BaseMapper" type="com.dataobject.PermissionDO">
+        <id column="id" property="id"/>
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="permission" property="permission" />
+    </resultMap>
+
+    <select id="findPermissionByUsername" resultMap="BaseMapper" parameterType="string">
+      SELECT
+	    per.permission
+      FROM
+        (
+          SELECT
+            permission.permission_id
+          FROM
+            sys_user suser
+          LEFT JOIN sys_user_role role ON suser.id = role.id
+          LEFT JOIN sys_role_permission permission ON permission.role_id = role.id
+          WHERE
+            suser.username = #{username}
+          AND suser.flag = 0
+        ) role
+      LEFT JOIN sys_permission per ON role.permission_id = per.id
+      WHERE
+        per.flag = 0
+    </select>
+
+</mapper>

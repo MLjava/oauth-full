@@ -1,0 +1,35 @@
+server:
+  port: 9696
+spring:
+  application:
+    name: OAuth2
+  datasource:
+    name: OAuth2
+    url: jdbc:mysql://127.0.0.1:3306/oauth2?useSSL=false&serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: malin
+  thymeleaf:
+    cache: false
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: malin
+  main:
+    allow-bean-definition-overriding: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://172.23.216.152:8761/eureka, http://172.23.216.153:8761/eureka, http://172.23.216.154:8761/eureka
+      healthcheck: true
+  instance:
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 10
+    # 这个必须使用true
+    prefer-ip-address: true
+mybatis:
+  mapper-locations: classpath:/mapping/**/*Mapper.xml
+  type-aliases-package: com.dataobject
+logging:
+  level:
+    com.dao: debug

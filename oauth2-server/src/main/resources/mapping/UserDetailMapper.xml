@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.IUserDetailDao">
+
+    <resultMap id="BaseMapper" type="com.dataobject.UserDetailDO">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="age" property="age" />
+        <result column="sex" property="sex" />
+        <result column="birthday" property="birthday" />
+        <result column="icon" property="icon" />
+        <result column="user_id" property="userId" />
+    </resultMap>
+
+    <sql id="BaseSql">
+        SELECT
+            id,
+            `name`,
+            sex,
+            birthday,
+            icon,
+            user_id
+        FROM
+            `user_detail`
+        WHERE
+            flag = 0
+    </sql>
+
+    <select id="findUserDetailByUserId" resultMap="BaseMapper" parameterType="string">
+        <include refid="BaseSql"/>
+        AND user_id = #{userId}
+    </select>
+
+</mapper>
