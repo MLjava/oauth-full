@@ -1,5 +1,6 @@
 package com.config;
 
+import com.oauth2.OAuth2ClientDetailsService;
 import com.services.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,9 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private OAuth2ClientDetailsService oAuth2ClientDetailsService;
+
     /**
      * token使用reids存贮
      *
@@ -85,7 +89,6 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     public void configure(ClientDetailsServiceConfigurer clients)
             throws Exception {
         clients
-                .jdbc(dataSource)
-                .passwordEncoder(passwordEncoder);
+               .withClientDetails(oAuth2ClientDetailsService);
     }
 }

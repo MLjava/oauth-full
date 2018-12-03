@@ -1,6 +1,5 @@
 package com.security;
 
-import com.dataobject.UserDO;
 import com.dto.UserDTO;
 import com.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
