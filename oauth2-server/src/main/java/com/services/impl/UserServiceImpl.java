@@ -60,7 +60,7 @@ public class UserServiceImpl implements IUserService {
         if (user.getEnable().equals(1)) {
             throw new UserException(UserEnum.USER_IS_DISABLED);
         }
-        return new UserDTO(user, findPermissionsByUsername(username));
+        return new UserDTO(user, getPermissionsByUsername(username));
     }
 
     /**
@@ -69,7 +69,7 @@ public class UserServiceImpl implements IUserService {
      * @param username
      * @return
      */
-    private List<String> findPermissionsByUsername(@NonNull String username) {
+    private List<String> getPermissionsByUsername(@NonNull String username) {
         List<PermissionDO> byUsername = permissionDao.findPermissionByUsername(username);
         if (byUsername == null || byUsername.size() == 0) {
             throw new UserException(UserEnum.PERMISSION_NOT_SETTING);

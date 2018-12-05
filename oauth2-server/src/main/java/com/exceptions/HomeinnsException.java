@@ -12,7 +12,7 @@ public class HomeinnsException extends RuntimeException {
 
     private Integer code;
 
-    public HomeinnsException(Integer code, String message) {
+    HomeinnsException(Integer code, String message) {
         super(message);
         this.code = code;
     }

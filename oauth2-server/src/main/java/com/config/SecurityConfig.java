@@ -1,6 +1,5 @@
 package com.config;
 
-import com.security.HomeinnsAuthenticationProvider;
 import com.services.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -31,9 +31,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private IUserService userService;
 
-    @Autowired
-    private HomeinnsAuthenticationProvider authenticationProvider;
-
     /**
      * 配置自定义的UserDetailsService
      *
@@ -43,18 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
-        auth.userDetailsService(userService)
-                .passwordEncoder(encoder());
-//        自定义provider
-//        auth
-//                .authenticationProvider(authenticationProvider);
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean()
-            throws Exception {
-        return super.authenticationManagerBean();
+        auth
+                .userDetailsService(userService)
+                .passwordEncoder(passwordEncoder());
     }
 
     /**
@@ -63,10 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @return
      */
     @Bean
-    public PasswordEncoder encoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     /**
      * 配合页面使用权限验证
      *
@@ -75,12 +62,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @return
      */
     @Bean
-    public SpringTemplateEngine templateEngine(ITemplateResolver templateResolver,
-                                               SpringSecurityDialect securityDialect) {
+    public SpringTemplateEngine templateEngine (ITemplateResolver templateResolver,
+                                                SpringSecurityDialect securityDialect){
         SpringTemplateEngine springTemplateEngine = new SpringTemplateEngine();
         springTemplateEngine.setTemplateResolver(templateResolver);
         springTemplateEngine.addDialect(securityDialect);
         return springTemplateEngine;
     }
 
+    @Override
+    @Bean
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
 }

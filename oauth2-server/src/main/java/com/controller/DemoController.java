@@ -27,5 +27,11 @@ public class DemoController {
         return mv;
     }
 
+    @GetMapping("/logins")
+    public ModelAndView logins() {
+        ModelAndView mv = new ModelAndView("login");
+        return mv;
+    }
+
 
 }
